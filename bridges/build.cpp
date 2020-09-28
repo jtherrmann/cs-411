@@ -1,12 +1,10 @@
 #include "build.h"
 
-#include <cmath>
-using std::pow;
+#include <cstddef>
+using std::size_t;
 
-// TODO go through and see if should be using a larger int type than 'int'
-
-int get_toll(int subset, const vector<Bridge> & bridges);
-vector<int> get_bridge_indices(unsigned int subset);
+int get_toll(size_t subset, const vector<Bridge> & bridges);
+vector<size_t> get_bridge_indices(size_t subset);
 bool conflict(const Bridge & first, const Bridge & second);
 
 int build(int w, int e, const vector<Bridge> & bridges) {
@@ -14,7 +12,7 @@ int build(int w, int e, const vector<Bridge> & bridges) {
     (void)e;
     int max = 0;
     auto n = bridges.size();
-    for (auto subset = 0; subset < pow(2, n); ++subset) {
+    for (size_t subset = 0; subset < 1u<<n; ++subset) {
         auto toll = get_toll(subset, bridges);
         if (toll > max)
             max = toll;
@@ -22,7 +20,7 @@ int build(int w, int e, const vector<Bridge> & bridges) {
     return max;
 }
 
-int get_toll(int subset, const vector<Bridge> & bridges) {
+int get_toll(size_t subset, const vector<Bridge> & bridges) {
     int toll = 0;
     // TODO iterate through indices without converting to vector first?
     auto indices = get_bridge_indices(subset);
@@ -37,12 +35,12 @@ int get_toll(int subset, const vector<Bridge> & bridges) {
 }
 
 // TODO do not return a copy of the vector
-vector<int> get_bridge_indices(unsigned int subset) {
-    vector<int> indices;
-    for (auto index = 0; subset != 0; ++index) {
-        if (subset & (unsigned int)1)
+vector<size_t> get_bridge_indices(size_t subset) {
+    vector<size_t> indices;
+    for (size_t index = 0; subset != 0; ++index) {
+        if (subset & 1u)
             indices.push_back(index);
-        subset >>= (unsigned int)1;
+        subset >>= 1u;
     }
     return indices;
 }
