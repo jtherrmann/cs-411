@@ -42,7 +42,6 @@ void fill_bridge_indices(size_t subset, vector<size_t> & indices) {
     }
 }
 
-// TODO pass values separately
 bool conflict(const Bridge & first, const Bridge & second) {
     return first[0] == second[0]
             || first[1] == second[1]
