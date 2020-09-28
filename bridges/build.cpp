@@ -26,13 +26,12 @@ int get_toll(int subset, const vector<Bridge> & bridges) {
     int toll = 0;
     // TODO iterate through indices without converting to vector first?
     auto indices = get_bridge_indices(subset);
-    // TODO use iterators
-    for (auto i = 0; i < indices.size(); ++i) {
-        for (auto j = i + 1; j < indices.size(); ++j) {
-            if (conflict(bridges[indices[i]], bridges[indices[j]]))
+    for (auto i = indices.begin(); i != indices.end(); ++i) {
+        for (auto j = i + 1; j != indices.end(); ++j) {
+            if (conflict(bridges[*i], bridges[*j]))
                 return -1;
         }
-        toll += bridges[indices[i]][2];
+        toll += bridges[*i][2];
     }
     return toll;
 }
