@@ -1,3 +1,9 @@
+// Jake Herrmann
+// CS 411
+// 28 Sep 2020
+//
+// Header file for the exhaustive-search bridge-building algorithm.
+
 #ifndef BRIDGES_BUILD_H
 #define BRIDGES_BUILD_H
 
