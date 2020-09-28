@@ -26,6 +26,7 @@ int get_toll(int subset, const vector<Bridge> & bridges) {
     int toll = 0;
     // TODO iterate through indices without converting to vector first?
     auto indices = get_bridge_indices(subset);
+    // TODO use iterators
     for (auto i = 0; i < indices.size(); ++i) {
         for (auto j = i + 1; j < indices.size(); ++j) {
             if (conflict(bridges[indices[i]], bridges[indices[j]]))
@@ -47,6 +48,7 @@ vector<int> get_bridge_indices(unsigned int subset) {
     return indices;
 }
 
+// TODO pass values separately
 bool conflict(const Bridge & first, const Bridge & second) {
     return first[0] == second[0]
             || first[1] == second[1]
