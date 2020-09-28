@@ -20,6 +20,9 @@
 // Additional includes for this test program
 #include <vector>       // for std::vector
 
+#include <chrono>
+using namespace std::chrono;
+
 
 // ************************************************************************
 // Testing Package:
@@ -988,7 +991,12 @@ void test_build(Tester & t)
 int main()
 {
     Tester t;
+
+    auto start = high_resolution_clock::now();
     test_build(t);
+    auto stop = high_resolution_clock::now();
+
+    auto duration = duration_cast<milliseconds>(stop - start);
 
     std::cout << std::endl;
     if (t.allPassed())
@@ -1003,9 +1011,7 @@ int main()
     }
     std::cout << std::endl;
 
-    // Wait for user
-    std::cout << "Press ENTER to quit ";
-    while (std::cin.get() != '\n') ;
+    std::cout << "Time (ms): " << duration.count() << std::endl;
 
     return 0;
 }
