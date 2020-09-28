@@ -4,7 +4,7 @@
 using std::size_t;
 
 int get_toll(size_t subset, const vector<Bridge> & bridges);
-vector<size_t> get_bridge_indices(size_t subset);
+void fill_bridge_indices(size_t subset, vector<size_t> & indices);
 bool conflict(const Bridge & first, const Bridge & second);
 
 int build(int w, int e, const vector<Bridge> & bridges) {
@@ -22,8 +22,8 @@ int build(int w, int e, const vector<Bridge> & bridges) {
 
 int get_toll(size_t subset, const vector<Bridge> & bridges) {
     int toll = 0;
-    // TODO iterate through indices without converting to vector first?
-    auto indices = get_bridge_indices(subset);
+    vector<size_t> indices;
+    fill_bridge_indices(subset, indices);
     for (auto i = indices.begin(); i != indices.end(); ++i) {
         for (auto j = i + 1; j != indices.end(); ++j) {
             if (conflict(bridges[*i], bridges[*j]))
@@ -34,15 +34,12 @@ int get_toll(size_t subset, const vector<Bridge> & bridges) {
     return toll;
 }
 
-// TODO do not return a copy of the vector
-vector<size_t> get_bridge_indices(size_t subset) {
-    vector<size_t> indices;
+void fill_bridge_indices(size_t subset, vector<size_t> & indices) {
     for (size_t index = 0; subset != 0; ++index) {
         if (subset & 1u)
             indices.push_back(index);
         subset >>= 1u;
     }
-    return indices;
 }
 
 // TODO pass values separately
