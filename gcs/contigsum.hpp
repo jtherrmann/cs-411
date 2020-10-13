@@ -1,9 +1,14 @@
+// Jake Herrmann
+// CS 411
+// 12 Oct 2020
 //
-// Created by jth on 10/11/20.
-//
+// contigsum.hpp
+// Header file for the Greatest Contiguous Sum (GCS) algorithm.
+
 
 #ifndef GCS_CONTIGSUM_HPP
 #define GCS_CONTIGSUM_HPP
+
 
 #include <algorithm>
 using std::max;
@@ -43,6 +48,5 @@ tuple<int, int, int, int> contigSumRec(RAIter first, RAIter last) {
 
     return {A, B, C, D};
 }
-
 
 #endif //GCS_CONTIGSUM_HPP
