@@ -1,18 +1,17 @@
-// huffcode.cpp  UNFINISHED
-// Glenn G. Chappell
-// 29 Nov 2015
+// Jake Herrmann
+// CS 411
+// 25 Nov 2020
 //
-// For CS 411/611 Fall 2015
-// Assignment 6, Exercise A
-// Source for class HuffCode
-//
-// Modified 11/22/17
-// Chris Hartman
-// For CS 411 Fall 2017
+// huffcode.cpp
+// Source file for Huffman encoding.
+// Based on the skeleton file by Glenn G. Chappell and Chris Hartman.
 
-#include "huffcode.hpp"  // for class HuffCode declaration
+
+#include "huffcode.hpp"
+
 #include <string>
 using std::string;
+
 #include <unordered_map>
 using std::unordered_map;
 
@@ -26,16 +25,48 @@ using std::priority_queue;
 using std::vector;
 
 
-class NodeCompare {
-public:
-    bool operator() (const shared_ptr<Node>& node1, const shared_ptr<Node>& node2) {
-        // Return true if the first node has lower priority than the second.
-        return node1->weight > node2->weight;
+// ----------------------------------------------------------------------------
+// HuffCode: public member functions
+// ----------------------------------------------------------------------------
+
+void HuffCode::setWeights(const unordered_map<char, int> & weights) {
+    this->_tree = HuffCode::_createTree(weights);
+    if (this->_tree)
+        this->_traverseTree(this->_tree, this->_tree->isLeaf() ? "0" : "");
+}
+
+
+string HuffCode::encode(const string & text) const {
+    string result;
+    for (auto symbol : text)
+        result += this->_codewords.at(symbol);
+    return result;
+}
+
+
+string HuffCode::decode(const string & codestr) const {
+    if (!codestr.empty() && this->_tree->isLeaf())
+        return string(1, this->_tree->symbol);
+
+    string result;
+    shared_ptr<Node> node = this->_tree;
+
+    for (auto bit : codestr) {
+        node = (bit == '0' ? node->left : node->right);
+        if (node->isLeaf()) {
+            result += node->symbol;
+            node = this->_tree;
+        }
     }
-};
+    return result;
+}
 
 
-shared_ptr<Node> getHuffmanTree(const unordered_map<char, int> & weights) {
+// ----------------------------------------------------------------------------
+// HuffCode: private member functions
+// ----------------------------------------------------------------------------
+
+shared_ptr<HuffCode::Node> HuffCode::_createTree(const unordered_map<char, int> & weights) {
     if (weights.empty())
         return nullptr;
 
@@ -57,44 +88,11 @@ shared_ptr<Node> getHuffmanTree(const unordered_map<char, int> & weights) {
 }
 
 
-void HuffCode::traverseTree(const std::shared_ptr<Node> &node, const string &codeword) {
+void HuffCode::_traverseTree(const std::shared_ptr<Node> &node, const string &codeword) {
     if (node->isLeaf())
-        this->symbolsToCodewords[node->symbol] = codeword;
+        this->_codewords[node->symbol] = codeword;
     else {
-        traverseTree(node->left, codeword + "0");
-        traverseTree(node->right, codeword + "1");
+        _traverseTree(node->left, codeword + "0");
+        _traverseTree(node->right, codeword + "1");
     }
-}
-
-
-void HuffCode::setWeights(const unordered_map<char, int> & weights) {
-    this->tree = getHuffmanTree(weights);
-    if (this->tree)
-        this->traverseTree(this->tree, this->tree->isLeaf() ? "0" : "");
-}
-
-
-string HuffCode::encode(const string & text) const {
-    string result;
-    for (auto symbol : text)
-        result += this->symbolsToCodewords.at(symbol);
-    return result;
-}
-
-
-string HuffCode::decode(const string & codestr) const {
-    if (!codestr.empty() && this->tree->isLeaf())
-        return string(1, this->tree->symbol);
-
-    string result;
-    shared_ptr<Node> node = this->tree;
-
-    for (auto bit : codestr) {
-        node = (bit == '0' ? node->left : node->right);
-        if (node->isLeaf()) {
-            result += node->symbol;
-            node = this->tree;
-        }
-    }
-    return result;
 }
