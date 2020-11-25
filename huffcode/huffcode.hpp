@@ -51,7 +51,7 @@ private:
 
     class NodeCompare {
     public:
-        bool operator() (const std::shared_ptr<Node>& node1, const std::shared_ptr<Node>& node2) {
+        bool operator() (const std::shared_ptr<Node> & node1, const std::shared_ptr<Node> & node2) {
             // Return true if the first node has lower priority than the second. Note that if the
             // weights are equal, then the second node has lower priority.
             return node1->weight > node2->weight;
@@ -64,7 +64,7 @@ private:
 private:
     static std::shared_ptr<Node> _createTree(const std::unordered_map<char, int> & weights);
 
-    void _traverseTree(const std::shared_ptr<Node> &node, const std::string &codeword);
+    void _traverseTree(const std::shared_ptr<Node> & node, const std::string & codeword);
 
 // ----------------------------------------------------------------------------
 // HuffCode: data members

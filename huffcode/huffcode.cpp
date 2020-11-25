@@ -73,7 +73,7 @@ shared_ptr<HuffCode::Node> HuffCode::_createTree(const unordered_map<char, int> 
     auto trees = priority_queue<shared_ptr<Node>, vector<shared_ptr<Node>>, NodeCompare>();
 
     for (auto pair : weights)
-        trees.push(make_shared<Node>(Node({pair.first, pair.second, nullptr, nullptr})));
+        trees.push(make_shared<Node>(Node({pair.first, pair.second})));
 
     while (trees.size() > 1) {
         auto tree1 = trees.top();
@@ -88,7 +88,7 @@ shared_ptr<HuffCode::Node> HuffCode::_createTree(const unordered_map<char, int> 
 }
 
 
-void HuffCode::_traverseTree(const std::shared_ptr<Node> &node, const string &codeword) {
+void HuffCode::_traverseTree(const std::shared_ptr<Node> & node, const string & codeword) {
     if (node->isLeaf())
         _codewords[node->symbol] = codeword;
     else {
