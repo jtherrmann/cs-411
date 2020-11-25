@@ -30,32 +30,32 @@ using std::vector;
 // ----------------------------------------------------------------------------
 
 void HuffCode::setWeights(const unordered_map<char, int> & weights) {
-    this->_tree = HuffCode::_createTree(weights);
-    if (this->_tree)
-        this->_traverseTree(this->_tree, this->_tree->isLeaf() ? "0" : "");
+    _tree = _createTree(weights);
+    if (_tree)
+        _traverseTree(_tree, _tree->isLeaf() ? "0" : "");
 }
 
 
 string HuffCode::encode(const string & text) const {
     string result;
     for (auto symbol : text)
-        result += this->_codewords.at(symbol);
+        result += _codewords.at(symbol);
     return result;
 }
 
 
 string HuffCode::decode(const string & codestr) const {
-    if (!codestr.empty() && this->_tree->isLeaf())
-        return string(1, this->_tree->symbol);
+    if (!codestr.empty() && _tree->isLeaf())
+        return string(1, _tree->symbol);
 
     string result;
-    shared_ptr<Node> node = this->_tree;
+    shared_ptr<Node> node = _tree;
 
     for (auto bit : codestr) {
         node = (bit == '0' ? node->left : node->right);
         if (node->isLeaf()) {
             result += node->symbol;
-            node = this->_tree;
+            node = _tree;
         }
     }
     return result;
@@ -90,7 +90,7 @@ shared_ptr<HuffCode::Node> HuffCode::_createTree(const unordered_map<char, int> 
 
 void HuffCode::_traverseTree(const std::shared_ptr<Node> &node, const string &codeword) {
     if (node->isLeaf())
-        this->_codewords[node->symbol] = codeword;
+        _codewords[node->symbol] = codeword;
     else {
         _traverseTree(node->left, codeword + "0");
         _traverseTree(node->right, codeword + "1");
