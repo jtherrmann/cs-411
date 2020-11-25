@@ -24,6 +24,11 @@ struct Node {
     int weight;
     std::shared_ptr<Node> left;
     std::shared_ptr<Node> right;
+
+public:
+    bool isLeaf() {
+        return !this->left;
+    }
 };
 
 

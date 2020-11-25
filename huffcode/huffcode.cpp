@@ -26,7 +26,6 @@ using std::priority_queue;
 using std::vector;
 
 
-// TODO break ties explicitly?
 class NodeCompare {
 public:
     bool operator() (const shared_ptr<Node>& node1, const shared_ptr<Node>& node2) {
@@ -40,7 +39,6 @@ shared_ptr<Node> getHuffmanTree(const unordered_map<char, int> & weights) {
     if (weights.empty())
         return nullptr;
 
-    // TODO do I have to pass container type before comparison function? what is the default?
     auto trees = priority_queue<shared_ptr<Node>, vector<shared_ptr<Node>>, NodeCompare>();
 
     for (auto pair : weights)
@@ -60,12 +58,8 @@ shared_ptr<Node> getHuffmanTree(const unordered_map<char, int> & weights) {
 
 
 void HuffCode::traverseTree(const std::shared_ptr<Node> &tree, const string &codeword) {
-    if (!tree->left)
-        // TODO clean this up
-        if (codeword.empty())
-            this->symbolsToCodewords[tree->symbol] = "0";
-        else
-            this->symbolsToCodewords[tree->symbol] = codeword;
+    if (tree->isLeaf())
+        this->symbolsToCodewords[tree->symbol] = codeword;
     else {
         traverseTree(tree->left, codeword + "0");
         traverseTree(tree->right, codeword + "1");
@@ -76,7 +70,7 @@ void HuffCode::traverseTree(const std::shared_ptr<Node> &tree, const string &cod
 void HuffCode::setWeights(const unordered_map<char, int> & weights) {
     this->huffmanTree = getHuffmanTree(weights);
     if (this->huffmanTree)
-        this->traverseTree(this->huffmanTree, "");
+        this->traverseTree(this->huffmanTree, this->huffmanTree->isLeaf() ? "0" : "");
 }
 
 
@@ -89,17 +83,18 @@ string HuffCode::encode(const string & text) const {
 
 
 string HuffCode::decode(const string & codestr) const {
+    if (!codestr.empty() && this->huffmanTree->isLeaf())
+        return string(1, this->huffmanTree->symbol);
+
     string result;
     shared_ptr<Node> node = this->huffmanTree;
+
     for (auto bit : codestr) {
-        if (!node->left) {
+        node = (bit == '0' ? node->left : node->right);
+        if (node->isLeaf()) {
             result += node->symbol;
             node = this->huffmanTree;
         }
-        node = (bit == '0' ? node->left : node->right);
     }
-    // TODO clean this up
-    if (node && !codestr.empty())
-        result += node->symbol;
     return result;
 }
