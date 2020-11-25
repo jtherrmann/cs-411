@@ -16,6 +16,17 @@
 #include <string>
 #include <unordered_map>
 
+#include <memory>
+
+
+struct Node {
+    char symbol;
+    int weight;
+    std::shared_ptr<Node> left;
+    std::shared_ptr<Node> right;
+};
+
+
 // Class HuffCode
 // Encoding & decoding using a Huffman code
 class HuffCode {
@@ -36,6 +47,10 @@ public:
 
 // ***** HuffCode: data members *****
 private:
+    std::shared_ptr<Node> huffmanTree;
+    std::unordered_map<char, std::string> symbolsToCodewords;
+
+    void traverseTree(const std::shared_ptr<Node> &tree, const std::string &codeword);
 
 };  // End class HuffCode
 
