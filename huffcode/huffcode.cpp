@@ -37,6 +37,9 @@ public:
 
 
 shared_ptr<Node> getHuffmanTree(const unordered_map<char, int> & weights) {
+    if (weights.empty())
+        return nullptr;
+
     // TODO do I have to pass container type before comparison function? what is the default?
     auto trees = priority_queue<shared_ptr<Node>, vector<shared_ptr<Node>>, NodeCompare>();
 
@@ -52,10 +55,7 @@ shared_ptr<Node> getHuffmanTree(const unordered_map<char, int> & weights) {
 
         trees.push(make_shared<Node>(Node({0, tree1->weight + tree2->weight, tree1, tree2})));
     }
-
-    if (!trees.empty())
-        return trees.top();
-    return nullptr;
+    return trees.top();
 }
 
 
