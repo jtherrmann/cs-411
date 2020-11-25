@@ -52,10 +52,10 @@ public:
 
 // ***** HuffCode: data members *****
 private:
-    std::shared_ptr<Node> huffmanTree;
+    std::shared_ptr<Node> tree;
     std::unordered_map<char, std::string> symbolsToCodewords;
 
-    void traverseTree(const std::shared_ptr<Node> &tree, const std::string &codeword);
+    void traverseTree(const std::shared_ptr<Node> &node, const std::string &codeword);
 
 };  // End class HuffCode
 

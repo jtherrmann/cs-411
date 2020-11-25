@@ -57,20 +57,20 @@ shared_ptr<Node> getHuffmanTree(const unordered_map<char, int> & weights) {
 }
 
 
-void HuffCode::traverseTree(const std::shared_ptr<Node> &tree, const string &codeword) {
-    if (tree->isLeaf())
-        this->symbolsToCodewords[tree->symbol] = codeword;
+void HuffCode::traverseTree(const std::shared_ptr<Node> &node, const string &codeword) {
+    if (node->isLeaf())
+        this->symbolsToCodewords[node->symbol] = codeword;
     else {
-        traverseTree(tree->left, codeword + "0");
-        traverseTree(tree->right, codeword + "1");
+        traverseTree(node->left, codeword + "0");
+        traverseTree(node->right, codeword + "1");
     }
 }
 
 
 void HuffCode::setWeights(const unordered_map<char, int> & weights) {
-    this->huffmanTree = getHuffmanTree(weights);
-    if (this->huffmanTree)
-        this->traverseTree(this->huffmanTree, this->huffmanTree->isLeaf() ? "0" : "");
+    this->tree = getHuffmanTree(weights);
+    if (this->tree)
+        this->traverseTree(this->tree, this->tree->isLeaf() ? "0" : "");
 }
 
 
@@ -83,17 +83,17 @@ string HuffCode::encode(const string & text) const {
 
 
 string HuffCode::decode(const string & codestr) const {
-    if (!codestr.empty() && this->huffmanTree->isLeaf())
-        return string(1, this->huffmanTree->symbol);
+    if (!codestr.empty() && this->tree->isLeaf())
+        return string(1, this->tree->symbol);
 
     string result;
-    shared_ptr<Node> node = this->huffmanTree;
+    shared_ptr<Node> node = this->tree;
 
     for (auto bit : codestr) {
         node = (bit == '0' ? node->left : node->right);
         if (node->isLeaf()) {
             result += node->symbol;
-            node = this->huffmanTree;
+            node = this->tree;
         }
     }
     return result;
