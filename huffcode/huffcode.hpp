@@ -39,7 +39,7 @@ public:
 // ***** HuffCode: general public functions *****
 public:
 
-    void setWeights(const std::unordered_map<char, int> & theweights);
+    void setWeights(const std::unordered_map<char, int> & weights);
 
     std::string encode(const std::string & text) const;
 
