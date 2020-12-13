@@ -55,10 +55,13 @@ def quicksort(arr, move_pivot=pivot_left):
 # Internal functions
 # ----------------------------------------------------------------------
 
+# TODO clean up counting
+
 def _quicksort(arr, left, right, move_pivot):
     # Quicksort, adapted from Levitin, p. 176
     count = 1
     while left < right:
+        count += 1
         split, partition_count = _partition(arr, left, right, move_pivot)
         count += partition_count
         count += _quicksort(arr, left, split - 1, move_pivot)
