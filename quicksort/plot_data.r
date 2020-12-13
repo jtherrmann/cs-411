@@ -1,4 +1,4 @@
-dat = read.csv('data.csv')
+dat = read.csv('results/data.csv')
 
 # TODO don't graph n vs. n
 # TODO scientific notation consistency

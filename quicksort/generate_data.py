@@ -1,9 +1,15 @@
+import os
+import shutil
 from random import randint
 
 from quicksort import quicksort, pivot_median_of_three, pivot_random
 
 
 def main():
+    if os.path.exists('results'):
+        shutil.rmtree('results')
+    os.mkdir('results')
+
     data = [('n',
              'shuffled.left', 'sorted.left', 'reversed.left', 'rotated.left',
              'shuffled.median', 'sorted.median', 'reversed.median', 'rotated.median',
@@ -44,7 +50,7 @@ def main():
             quicksort(rotated_arr.copy(), move_pivot=pivot_random),
         ))
 
-    with open('data.csv', 'w+') as f:
+    with open(os.path.join('results', 'data.csv'), 'w+') as f:
         f.write('\n'.join(','.join(map(str, row)) for row in data))
 
 
