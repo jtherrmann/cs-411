@@ -1,4 +1,4 @@
-options(scipen=-2)
+options(scipen=-3)
 dat = read.csv('results/data.csv')
 
 for (name in names(dat)[2:length(names(dat))]) {
@@ -7,6 +7,6 @@ for (name in names(dat)[2:length(names(dat))]) {
     pivot_type = name_split[2]
 
     png(paste0('results/', data_type, '-', pivot_type, '.png'))
-    plot(dat[['n']], dat[[name]], xlab='n', ylab='Time', main=paste0(data_type, ' data, with ', pivot_type, ' pivot'))
+    plot(dat[['n']], dat[[name]], xlab='Array length', ylab='Key comparisons', main=paste0(data_type, ' data, with ', pivot_type, ' pivot'))
     dev.off()
 }

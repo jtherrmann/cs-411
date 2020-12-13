@@ -46,7 +46,8 @@ def quicksort(arr, move_pivot=pivot_left):
     an array, left index, and right index, and moves the pivot element
     into the position specified by the left index.
 
-    Returns the approximate number of basic operations performed.
+    Returns the number of key comparisons performed (excluding pivot
+    selection).
     """
     return _quicksort(arr, 0, len(arr) - 1, move_pivot)
 
@@ -55,13 +56,10 @@ def quicksort(arr, move_pivot=pivot_left):
 # Internal functions
 # ----------------------------------------------------------------------
 
-# TODO clean up counting
-
 def _quicksort(arr, left, right, move_pivot):
     # Quicksort, adapted from Levitin, p. 176
-    count = 1
+    count = 0
     while left < right:
-        count += 1
         split, partition_count = _partition(arr, left, right, move_pivot)
         count += partition_count
         count += _quicksort(arr, left, split - 1, move_pivot)
@@ -72,27 +70,25 @@ def _quicksort(arr, left, right, move_pivot):
 def _partition(arr, left, right, move_pivot):
     # Hoare Partition, adapted from Levitin, p. 178
 
-    count = 2
+    count = 0
     move_pivot(arr, left, right)
     pivot = arr[left]
     i, j = left, right + 1
 
     while True:
         while True:
-            count += 2
             i += 1
+            count += 1
             if i == len(arr) - 1 or arr[i] >= pivot: break
 
         while True:
-            count += 2
             j -= 1
+            count += 1
             if arr[j] <= pivot: break
 
-        count += 2
         _swap(arr, i, j)
         if i >= j: break
 
-    count += 2
     _swap(arr, i, j)  # undo last swap
     _swap(arr, left, j)
     return j, count
