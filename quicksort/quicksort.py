@@ -24,10 +24,12 @@ def pivot_left(arr, left, right):
 def pivot_median_of_three(arr, left, right):
     """Median-of-three pivot selection."""
     mid = (left + right) // 2
-    if arr[left] <= arr[mid] <= arr[right] or arr[left] >= arr[mid] >= arr[right]:
+    if arr[left] < arr[mid] < arr[right] or arr[left] > arr[mid] > arr[right]:
         _swap(arr, left, mid)
-    elif arr[left] <= arr[right] <= arr[mid] or arr[left] >= arr[right] >= arr[mid]:
+    elif arr[left] < arr[right] < arr[mid] or arr[left] > arr[right] > arr[mid]:
         _swap(arr, left, right)
+    elif arr[mid] == arr[right] != arr[left]:
+        _swap(arr, left, mid)
 
 
 def pivot_random(arr, left, right):
