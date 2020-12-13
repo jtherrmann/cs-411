@@ -1,6 +1,6 @@
+options(scipen=-2)
 dat = read.csv('results/data.csv')
 
-# TODO scientific notation consistency
 for (name in names(dat)[2:length(names(dat))]) {
     name_split = strsplit(name, '\\.')[[1]]
     data_type = name_split[1]
