@@ -1,6 +1,7 @@
 dat = read.csv('data.csv')
 
 # TODO don't graph n vs. n
+# TODO scientific notation consistency
 for (name in names(dat)) {
     name_split = strsplit(name, '\\.')[[1]]
     data_type = name_split[1]
