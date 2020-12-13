@@ -2,7 +2,7 @@ import os
 import shutil
 from random import randint
 
-from quicksort import quicksort, pivot_median_of_three, pivot_random
+from quicksort import quicksort, pivot_left, pivot_median_of_three, pivot_random
 
 
 def main():
@@ -14,6 +14,8 @@ def main():
              'shuffled.left', 'sorted.left', 'reversed.left', 'rotated.left',
              'shuffled.median', 'sorted.median', 'reversed.median', 'rotated.median',
              'shuffled.random', 'sorted.random', 'reversed.random', 'rotated.random')]
+
+    pivots = (pivot_left, pivot_median_of_three, pivot_random)
 
     # Max n is limited by quicksort hitting Python's max recursion depth.
     for n in range(0, 1901, 5):
@@ -31,24 +33,11 @@ def main():
         else:
             rotated_arr = []
 
-        data.append((
-            n,
+        arrays = (shuffled_arr, sorted_arr, reversed_arr, rotated_arr)
 
-            quicksort(shuffled_arr.copy()),
-            quicksort(sorted_arr.copy()),
-            quicksort(reversed_arr.copy()),
-            quicksort(rotated_arr.copy()),
-
-            quicksort(shuffled_arr.copy(), move_pivot=pivot_median_of_three),
-            quicksort(sorted_arr.copy(), move_pivot=pivot_median_of_three),
-            quicksort(reversed_arr.copy(), move_pivot=pivot_median_of_three),  # TODO quadratic?
-            quicksort(rotated_arr.copy(), move_pivot=pivot_median_of_three),
-
-            quicksort(shuffled_arr.copy(), move_pivot=pivot_random),
-            quicksort(sorted_arr.copy(), move_pivot=pivot_random),
-            quicksort(reversed_arr.copy(), move_pivot=pivot_random),
-            quicksort(rotated_arr.copy(), move_pivot=pivot_random),
-        ))
+        counts = tuple(quicksort(arr.copy(), move_pivot=pivot)
+                       for pivot in pivots for arr in arrays)
+        data.append((n, *counts))
 
     with open(os.path.join('results', 'data.csv'), 'w+') as f:
         f.write('\n'.join(','.join(map(str, row)) for row in data))
