@@ -45,8 +45,10 @@ def quicksort(arr, move_pivot=pivot_left):
     If specified, the move_pivot argument must be a function that takes
     an array, left index, and right index, and moves the pivot element
     into the position specified by the left index.
+
+    Returns the approximate number of basic operations performed.
     """
-    _quicksort(arr, 0, len(arr) - 1, move_pivot)
+    return _quicksort(arr, 0, len(arr) - 1, move_pivot)
 
 
 # ----------------------------------------------------------------------
@@ -55,35 +57,42 @@ def quicksort(arr, move_pivot=pivot_left):
 
 def _quicksort(arr, left, right, move_pivot):
     # Quicksort, adapted from Levitin, p. 176
+    count = 1
     if left < right:
-        split = _partition(arr, left, right, move_pivot)
-        _quicksort(arr, left, split - 1, move_pivot)
-        _quicksort(arr, split + 1, right, move_pivot)
+        split, partition_count = _partition(arr, left, right, move_pivot)
+        count += partition_count
+        count += _quicksort(arr, left, split - 1, move_pivot)
+        count += _quicksort(arr, split + 1, right, move_pivot)
+    return count
 
 
 def _partition(arr, left, right, move_pivot):
     # Hoare Partition, adapted from Levitin, p. 178
 
+    count = 2
     move_pivot(arr, left, right)
     pivot = arr[left]
     i, j = left, right + 1
 
     while True:
         while True:
+            count += 2
             i += 1
             if i == len(arr) - 1 or arr[i] >= pivot: break
 
         while True:
+            count += 2
             j -= 1
             if arr[j] <= pivot: break
 
+        count += 2
         _swap(arr, i, j)
-
         if i >= j: break
 
+    count += 2
     _swap(arr, i, j)  # undo last swap
     _swap(arr, left, j)
-    return j
+    return j, count
 
 
 def _swap(arr, first, second):
