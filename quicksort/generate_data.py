@@ -9,8 +9,8 @@ def main():
              'shuffled.median', 'sorted.median', 'reversed.median', 'rotated.median',
              'shuffled.random', 'sorted.random', 'reversed.random', 'rotated.random')]
 
-    # TODO eliminate tail call in quicksort, increase max n
-    for n in range(0, 901, 5):
+    # Max n is limited by quicksort hitting Python's max recursion depth.
+    for n in range(0, 1901, 5):
         if n % 100 == 0:
             print(f'n = {n}')
 
