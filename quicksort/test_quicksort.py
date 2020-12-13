@@ -1,3 +1,10 @@
+# Jake Herrmann
+# CS 411
+# 13 Dec 2020
+#
+# test_quicksort.py
+# Unit tests for quicksort.
+
 import unittest
 
 from quicksort import quicksort

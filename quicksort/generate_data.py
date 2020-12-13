@@ -1,3 +1,10 @@
+# Jake Herrmann
+# CS 411
+# 13 Dec 2020
+#
+# generate_data.py
+# Generate efficiency data.
+
 import os
 import shutil
 from random import randint

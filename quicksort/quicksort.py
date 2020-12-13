@@ -1,6 +1,6 @@
 # Jake Herrmann
 # CS 411
-# TODO date
+# 13 Dec 2020
 #
 # quicksort.py
 # Source file for quicksort algorithm.

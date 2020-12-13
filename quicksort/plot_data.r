@@ -1,3 +1,10 @@
+# Jake Herrmann
+# CS 411
+# 13 Dec 2020
+#
+# plot_data.r
+# Generate efficiency plots.
+
 options(scipen=-3)
 
 average = function(n) {
