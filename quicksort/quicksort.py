@@ -73,8 +73,16 @@ def _partition(arr, left, right, move_pivot):
     # Hoare Partition, adapted from Levitin, p. 178
 
     count = 0
+
+    # FIXME: I don't think this is the correct way to generalize pivot
+    #  selection for Hoare's algorithm. In particular, using
+    #  median-of-three with reversed input data results in quadratic
+    #  efficiency, because the left and right subarrays become sorted
+    #  and rotated by one position, which is known to result in
+    #  quadratic efficiency for median-of-three.
     move_pivot(arr, left, right)
     pivot = arr[left]
+
     i, j = left, right + 1
 
     while True:
